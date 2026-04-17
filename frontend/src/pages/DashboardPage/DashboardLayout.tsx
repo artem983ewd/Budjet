@@ -1,5 +1,17 @@
 import { useNavigate, Outlet, useLocation } from "react-router-dom";
-import { Container, Group, Button, Box } from "@mantine/core";
+import { Container, Group, ActionIcon, Box } from "@mantine/core";
+import {
+  IconArrowAutofitUp,
+  IconArrowDownCircle,
+  IconArrowUpCircle,
+  IconChartBar,
+  IconCreditCard,
+  IconHome,
+  IconReportMoney,
+  IconSettings,
+  IconWallet,
+} from "@tabler/icons-react";
+import { color } from "storybook/theming";
 
 export function DashboardLayout() {
   const navigate = useNavigate();
@@ -9,7 +21,9 @@ export function DashboardLayout() {
   const isTab2 = location.pathname === "/main/dashboard/tab2";
 
   return (
-    <Box style={{ position: "relative", minHeight: "100vh", paddingBottom: 60 }}>
+    <Box
+      style={{ position: "relative", minHeight: "100vh", paddingBottom: 60 }}
+    >
       <Container style={{ paddingTop: "var(--mantine-spacing-md)" }}>
         <Outlet />
       </Container>
@@ -31,20 +45,46 @@ export function DashboardLayout() {
       >
         <Container size="md">
           <Group gap="sm">
-            <Button
+            <ActionIcon
               variant={isTab1 ? "filled" : "light"}
-              size="sm"
+              color="green"
+              size="xl"
               onClick={() => navigate("/main/dashboard/tab1")}
             >
-              Tab 1
-            </Button>
-            <Button
+              <IconWallet size={20} />
+            </ActionIcon>
+            <ActionIcon
               variant={isTab2 ? "filled" : "light"}
-              size="sm"
+              color="green"
+              size="xl"
               onClick={() => navigate("/main/dashboard/tab2")}
             >
-              Tab 2
-            </Button>
+              <IconArrowUpCircle size={20} />
+            </ActionIcon>
+            <ActionIcon
+              variant={isTab2 ? "filled" : "light"}
+              color="green"
+              size="xl"
+              onClick={() => navigate("/main/dashboard/tab2")}
+            >
+              <IconArrowDownCircle size={20} />
+            </ActionIcon>
+            <ActionIcon
+              variant={isTab2 ? "filled" : "light"}
+              color="green"
+              size="xl"
+              onClick={() => navigate("/main/dashboard/tab2")}
+            >
+              <IconReportMoney size={20} />
+            </ActionIcon>
+            <ActionIcon
+              variant={isTab2 ? "filled" : "light"}
+              color="green"
+              size="xl"
+              onClick={() => navigate("/main/dashboard/tab2")}
+            >
+              <IconChartBar size={20} />
+            </ActionIcon>
           </Group>
         </Container>
       </Box>
