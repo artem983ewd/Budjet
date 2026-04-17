@@ -8,41 +8,91 @@ import {
   UnstyledButton,
   rem,
   Box,
+  Modal,
+  SimpleGrid,
+  Button,
+  Stack,
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import {
   IconPlus,
   IconToolsKitchen2,
   IconShoppingCart,
   IconCoffee,
   IconCurrencyRubel,
+  IconCar,
+  IconDeviceGamepad2,
+  IconHeart,
+  IconHome,
+  IconShirt,
+  IconStethoscope,
+  IconGift,
+  IconTools,
 } from "@tabler/icons-react";
 
-// Типизация для данных (если используете TypeScript)
+// 1. Доступные иконки для выбора
+const AVAILABLE_ICONS = [
+  { name: "coffee", component: IconCoffee },
+  { name: "shop", component: IconShoppingCart },
+  { name: "car", component: IconCar },
+  { name: "game", component: IconDeviceGamepad2 },
+  { name: "health", component: IconStethoscope },
+  { name: "home", component: IconHome },
+  { name: "clothes", component: IconShirt },
+  { name: "gift", component: IconGift },
+  { name: "work", component: IconTools },
+];
+
 interface SubCategory {
   id: string;
   name: string;
-  icon: React.ReactNode;
+  iconName: string; // Храним только имя иконки
 }
 
 export function Tab1Page() {
-  // Состояние: ID редактируемой подкатегории (например, 'cafe')
+  // --- Состояния для списка и ввода ---
+  const [subCategories, setSubCategories] = useState<SubCategory[]>([
+    { id: "1", name: "Кафе", iconName: "coffee" },
+    { id: "2", name: "Магазин", iconName: "shop" },
+  ]);
   const [editingId, setEditingId] = useState<string | null>(null);
-  // Состояние для временного значения ввода
-  const [value, setValue] = useState("");
+  const [amountValue, setAmountValue] = useState("");
 
-  // Список подкатегорий (можно будет загружать из БД)
-  const subCategories: SubCategory[] = [
-    { id: "cafe", name: "Кафе", icon: <IconCoffee size={16} /> },
-    { id: "shop", name: "Магазин", icon: <IconShoppingCart size={16} /> },
-  ];
+  // --- Состояния для Модального окна (новая категория) ---
+  const [opened, { open, close }] = useDisclosure(false);
+  const [newCatName, setNewCatName] = useState("");
+  const [selectedIconName, setSelectedIconName] = useState("coffee");
 
-  const handleSave = (id: string) => {
-    if (value.trim() !== "") {
-      console.log(`Сохранение: Подкатегория ${id}, Сумма: ${value}`);
-      // Здесь ваша логика отправки данных на бэкенд или в стейт
+  // Функция сохранения суммы
+  const handleSaveAmount = (id: string) => {
+    if (amountValue.trim() !== "") {
+      console.log(`Записано: ${amountValue} руб. в категорию ${id}`);
+      // Тут логика сохранения транзакции
     }
     setEditingId(null);
-    setValue("");
+    setAmountValue("");
+  };
+
+  // Функция добавления новой категории
+  const handleAddCategory = () => {
+    if (newCatName.trim() === "") return;
+
+    const newCategory: SubCategory = {
+      id: Date.now().toString(),
+      name: newCatName,
+      iconName: selectedIconName,
+    };
+
+    setSubCategories([...subCategories, newCategory]);
+    setNewCatName("");
+    close();
+  };
+
+  // Поиск иконки по имени
+  const getIcon = (name: string) => {
+    const IconData =
+      AVAILABLE_ICONS.find((i) => i.name === name) || AVAILABLE_ICONS[0];
+    return <IconData.component size={16} />;
   };
 
   return (
@@ -52,19 +102,15 @@ export function Tab1Page() {
           <Accordion.Control>
             <Group justify="space-between">
               <Group gap="sm">
-                <IconToolsKitchen2
-                  size={20}
-                  stroke={1.5}
-                  color="var(--mantine-color-blue-filled)"
-                />
+                <IconToolsKitchen2 size={20} stroke={1.5} color="blue" />
                 <Text fw={500}>Еда</Text>
               </Group>
               <ActionIcon
                 variant="subtle"
                 color="gray"
                 onClick={(e) => {
-                  e.stopPropagation(); // Чтобы аккордеон не закрылся
-                  console.log("Добавить новую подкатегорию");
+                  e.stopPropagation();
+                  open(); // Открываем модалку создания
                 }}
               >
                 <IconPlus size={18} />
@@ -77,29 +123,24 @@ export function Tab1Page() {
               {subCategories.map((item) => (
                 <Box key={item.id} mb={8}>
                   {editingId === item.id ? (
-                    /* ИНПУТ ДЛЯ МОБИЛЬНЫХ */
                     <TextInput
                       placeholder="0.00"
                       variant="filled"
                       size="md"
                       autoFocus
                       type="number"
-                      inputMode="decimal" // Числовая клавиатура на телефоне
-                      value={value}
-                      onChange={(e) => setValue(e.currentTarget.value)}
+                      inputMode="decimal"
+                      value={amountValue}
+                      onChange={(e) => setAmountValue(e.currentTarget.value)}
                       leftSection={<IconCurrencyRubel size={16} />}
-                      // Сохраняем, если пользователь нажал Enter или кликнул в другое место
-                      onBlur={() => handleSave(item.id)}
+                      onBlur={() => handleSaveAmount(item.id)}
                       onKeyDown={(e) => {
-                        if (e.key === "Enter") handleSave(item.id);
+                        if (e.key === "Enter") handleSaveAmount(item.id);
                         if (e.key === "Escape") setEditingId(null);
                       }}
-                      styles={{
-                        input: { fontSize: rem(16), fontWeight: 500 },
-                      }}
+                      styles={{ input: { fontSize: rem(16), fontWeight: 500 } }}
                     />
                   ) : (
-                    /* ОБЫЧНАЯ КНОПКА КАТЕГОРИИ */
                     <UnstyledButton
                       onClick={() => setEditingId(item.id)}
                       style={{
@@ -108,13 +149,12 @@ export function Tab1Page() {
                         borderRadius: "var(--mantine-radius-sm)",
                         transition: "background-color 0.2s ease",
                       }}
-                      // Эффект наведения (через встроенные стили Mantine)
                       sx={(theme: any) => ({
                         "&:hover": { backgroundColor: theme.colors.gray[0] },
                       })}
                     >
                       <Group gap="xs">
-                        <Box opacity={0.6}>{item.icon}</Box>
+                        <Box opacity={0.6}>{getIcon(item.iconName)}</Box>
                         <Text size="sm">{item.name}</Text>
                       </Group>
                     </UnstyledButton>
@@ -125,6 +165,45 @@ export function Tab1Page() {
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion>
+
+      {/* --- МОДАЛЬНОЕ ОКНО СОЗДАНИЯ --- */}
+      <Modal
+        opened={opened}
+        onClose={close}
+        title="Новая подкатегория"
+        centered
+        radius="md"
+      >
+        <Stack gap="md">
+          <TextInput
+            label="Название"
+            placeholder="Например: Доставка"
+            value={newCatName}
+            onChange={(e) => setNewCatName(e.currentTarget.value)}
+          />
+
+          <Text size="sm" fw={500} mb={-10}>
+            Иконка
+          </Text>
+          <SimpleGrid cols={5} spacing="xs">
+            {AVAILABLE_ICONS.map((icon) => (
+              <ActionIcon
+                key={icon.name}
+                size="xl"
+                variant={selectedIconName === icon.name ? "filled" : "light"}
+                color={selectedIconName === icon.name ? "blue" : "gray"}
+                onClick={() => setSelectedIconName(icon.name)}
+              >
+                <icon.component size={22} />
+              </ActionIcon>
+            ))}
+          </SimpleGrid>
+
+          <Button fullWidth onClick={handleAddCategory} mt="sm">
+            Создать
+          </Button>
+        </Stack>
+      </Modal>
     </Box>
   );
 }
