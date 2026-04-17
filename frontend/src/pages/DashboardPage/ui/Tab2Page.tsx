@@ -14,8 +14,8 @@ export function Tab2Page() {
           Tab 2 Content
         </Title>
         <Text>
-          This is the content for Tab 2. The Footer persists when navigating
-          between tabs.
+          This is the coasdadsadsadsntent for Tab 2. The Footer persists when
+          navigating between tabs.
         </Text>
       </Card>
     </Stack>
