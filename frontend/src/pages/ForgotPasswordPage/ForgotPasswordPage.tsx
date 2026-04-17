@@ -7,7 +7,6 @@ import {
   TextInput,
   Title,
   Container,
-  Group,
   ActionIcon,
   useMantineColorScheme,
   useComputedColorScheme,
@@ -16,7 +15,7 @@ import {
 import { IconSun, IconMoon } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 
-export function RegisterPage() {
+export function ForgotPasswordPage() {
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme("light", {
     getInitialValueInEffect: true,
@@ -46,45 +45,25 @@ export function RegisterPage() {
       <Container size="xs" w="100%">
         <Paper withBorder shadow="sm" p="xl" radius="md">
           <Title order={2} ta="center" mb="md">
-            Create account
+            Forgot password?
           </Title>
 
-          <TextInput
-            label="First name"
-            placeholder="John"
-            required
-          />
-          <TextInput
-            label="Last name"
-            placeholder="Doe"
-            mt="md"
-            required
-          />
+          <Text ta="center" size="sm" mb="md">
+            Enter your email address and we&apos;ll send you a link to reset your password.
+          </Text>
+
           <TextInput
             label="Email address"
             placeholder="hello@gmail.com"
-            mt="md"
-            required
-          />
-          <PasswordInput
-            label="Password"
-            placeholder="Your password"
-            mt="md"
-            required
-          />
-          <PasswordInput
-            label="Confirm password"
-            placeholder="Confirm password"
-            mt="md"
             required
           />
 
           <Button fullWidth mt="xl" radius="md">
-            Register
+            Send reset link
           </Button>
 
           <Text ta="center" mt="md" size="sm">
-            Already have an account? <Anchor fw={500} component={Link} to="/">Login</Anchor>
+            Remember your password? <Anchor fw={500} component={Link} to="/">Login</Anchor>
           </Text>
         </Paper>
       </Container>

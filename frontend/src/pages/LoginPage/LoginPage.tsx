@@ -16,12 +16,15 @@ import {
 } from "@mantine/core";
 import { IconSun, IconMoon } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
+import { useLoginForm } from "@/features/Auth";
 
 export function LoginPage() {
   const { setColorScheme } = useMantineColorScheme();
-  const computedColorScheme = useComputedColorScheme("light", {
+  const computedColorScheme = useComputedColorScheme("dark", {
     getInitialValueInEffect: true,
   });
+
+  const { handleSubmit, loading } = useLoginForm();
 
   return (
     <Center mih="100vh" p="md">
@@ -50,31 +53,42 @@ export function LoginPage() {
             Welcome back!
           </Title>
 
-          <TextInput
-            label="Email address"
-            placeholder="hello@gmail.com"
-            required
-          />
-          <PasswordInput
-            label="Password"
-            placeholder="Your password"
-            mt="md"
-            required
-          />
+          <form onSubmit={handleSubmit}>
+            <TextInput
+              name="email"
+              label="Email address"
+              placeholder="hello@gmail.com"
+            />
+            <PasswordInput
+              name="password"
+              label="Password"
+              placeholder="Your password"
+              mt="md"
+            />
 
-          <Group justify="space-between" mt="lg">
-            <Checkbox label="Remember me" size="sm" />
-            <Anchor component={Link} to="/forgot-password" size="sm">
-              Forgot password?
-            </Anchor>
-          </Group>
+            <Group justify="space-between" mt="lg">
+              <Checkbox label="Remember me" size="sm" />
+              <Anchor component={Link} to="/forgot-password" size="sm">
+                Forgot password?
+              </Anchor>
+            </Group>
 
-          <Button fullWidth mt="xl" radius="md">
-            Login
-          </Button>
+            <Button
+              type="submit"
+              fullWidth
+              mt="xl"
+              radius="md"
+              loading={loading}
+            >
+              Login
+            </Button>
+          </form>
 
           <Text ta="center" mt="md" size="sm">
-            Don&apos;t have an account? <Anchor fw={500} component={Link} to="/register">Register</Anchor>
+            Don&apos;t have an account?{" "}
+            <Anchor fw={500} component={Link} to="/register">
+              Register
+            </Anchor>
           </Text>
         </Paper>
       </Container>
