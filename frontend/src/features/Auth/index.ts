@@ -1,7 +1,5 @@
-export { login, useLoginForm } from "./model/login";
-export { loginApi } from "./api/login";
-export type { LoginCredentials, LoginResponse } from "./api/login";
+export { useLogin, useLoginForm, loginApi } from "./model";
+export type { LoginCredentials, LoginResponse } from "./model";
 
-export { register, useRegisterForm } from "./model/register";
-export { registerApi } from "./api/register";
-export type { RegisterCredentials } from "./api/register";
+export { useRegister, useRegisterForm, registerApi } from "./model";
+export type { RegisterCredentials } from "./model";

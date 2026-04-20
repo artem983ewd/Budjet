@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
 import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
 import { IJwtPayload, ITokenResponse, IJwtConfig } from './interfaces';
 
 @Injectable()
@@ -48,6 +49,29 @@ export class AuthService {
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials');
     }
+    const payload: IJwtPayload = { sub: user.id, email: user.email };
+    const config = this.getJwtConfig();
+
+    return {
+      access_token: this.jwtService.sign(payload, {
+        secret: config.accessSecret,
+        expiresIn: config.accessExpires,
+      }),
+      refresh_token: this.jwtService.sign(payload, {
+        secret: config.refreshSecret,
+        expiresIn: config.refreshExpires,
+      }),
+    };
+  }
+
+  async register(registerDto: RegisterDto): Promise<ITokenResponse> {
+    const username = registerDto.firstName + ' ' + registerDto.lastName;
+    const user = await this.usersService.register({
+      username,
+      email: registerDto.email,
+      password: registerDto.password,
+    });
+
     const payload: IJwtPayload = { sub: user.id, email: user.email };
     const config = this.getJwtConfig();
 

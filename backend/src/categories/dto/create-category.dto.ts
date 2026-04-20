@@ -12,4 +12,8 @@ export class CreateCategoryDto {
     message: 'Тип должен быть income или expense',
   })
   type: 'income' | 'expense';
+
+  @IsString()
+  @IsOptional()
+  icon?: string;
 }

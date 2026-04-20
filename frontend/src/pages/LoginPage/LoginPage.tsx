@@ -24,7 +24,7 @@ export function LoginPage() {
     getInitialValueInEffect: true,
   });
 
-  const { handleSubmit, loading } = useLoginForm();
+  const { handleSubmit, loading, errors } = useLoginForm();
 
   return (
     <Center mih="100vh" p="md">
@@ -58,13 +58,21 @@ export function LoginPage() {
               name="email"
               label="Email address"
               placeholder="hello@gmail.com"
+              error={errors.email}
             />
             <PasswordInput
               name="password"
               label="Password"
               placeholder="Your password"
               mt="md"
+              error={errors.password}
             />
+
+            {errors.general && (
+              <Text c="red" ta="center" mt="md">
+                {errors.general}
+              </Text>
+            )}
 
             <Group justify="space-between" mt="lg">
               <Checkbox label="Remember me" size="sm" />

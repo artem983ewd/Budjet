@@ -1,0 +1,1 @@
+export { useIncomeStore } from "./model";

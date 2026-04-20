@@ -22,7 +22,7 @@ export function RegisterPage() {
     getInitialValueInEffect: true,
   });
 
-  const { handleSubmit, loading } = useRegisterForm();
+  const { handleSubmit, loading, errors } = useRegisterForm();
 
   return (
     <Center mih="100vh" p="md">
@@ -52,12 +52,13 @@ export function RegisterPage() {
           </Title>
 
           <form onSubmit={handleSubmit}>
-            <TextInput name="firstName" label="First name" placeholder="John" />
+            <TextInput name="firstName" label="First name" placeholder="John" error={errors.firstName} />
             <TextInput
               name="lastName"
               label="Last name"
               placeholder="Doe"
               mt="md"
+              error={errors.lastName}
             />
             <TextInput
               name="email"
@@ -65,19 +66,28 @@ export function RegisterPage() {
               placeholder="hello@gmail.com"
               type="email"
               mt="md"
+              error={errors.email}
             />
             <PasswordInput
               name="password"
               label="Password"
               placeholder="Your password"
               mt="md"
+              error={errors.password}
             />
             <PasswordInput
               name="confirmPassword"
               label="Confirm password"
               placeholder="Confirm password"
               mt="md"
+              error={errors.confirmPassword}
             />
+
+            {errors.general && (
+              <Text c="red" ta="center" mt="md">
+                {errors.general}
+              </Text>
+            )}
 
             <Button
               type="submit"

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, IsOptional } from 'class-validator';
 
 export class CreateDebtDto {
   @IsString()
@@ -12,4 +12,8 @@ export class CreateDebtDto {
   @IsNumber()
   @IsNotEmpty()
   remaining_debt: number;
+
+  @IsString()
+  @IsOptional()
+  icon?: string;
 }

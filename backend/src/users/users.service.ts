@@ -23,6 +23,7 @@ export class UsersService {
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
     const user: Partial<User> = {
       email: createUserDto.email,
+      username: createUserDto.username,
       password: hashedPassword,
     };
     const savedUser = await this.userRepository.save(user);
