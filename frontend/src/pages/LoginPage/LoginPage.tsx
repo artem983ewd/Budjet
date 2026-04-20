@@ -15,16 +15,25 @@ import {
   Center,
 } from "@mantine/core";
 import { IconSun, IconMoon } from "@tabler/icons-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { useLoginForm } from "@/features/Auth";
 
 export function LoginPage() {
+  const navigate = useNavigate();
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme("dark", {
     getInitialValueInEffect: true,
   });
 
   const { handleSubmit, loading, errors } = useLoginForm();
+
+  useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      navigate("/main/dashboard", { replace: true });
+    }
+  }, [navigate]);
 
   return (
     <Center mih="100vh" p="md">
