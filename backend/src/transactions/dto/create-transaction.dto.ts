@@ -3,7 +3,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
-  IsDate,
+  IsDateString,
 } from 'class-validator';
 
 export class CreateTransactionDto {
@@ -27,7 +27,7 @@ export class CreateTransactionDto {
   @IsOptional()
   description?: string;
 
-  @IsDate()
+  @IsDateString()
   @IsNotEmpty({ message: 'Дата операции обязательна' })
-  transactionDate: Date;
+  transactionDate: string;
 }

@@ -6,10 +6,13 @@ export interface LoginCredentials {
 }
 
 export interface LoginResponse {
-  token: string;
+  access_token: string;
+  refresh_token: string;
 }
 
-export async function loginApi(credentials: LoginCredentials): Promise<LoginResponse> {
+export async function loginApi(
+  credentials: LoginCredentials,
+): Promise<LoginResponse> {
   return apiClient<LoginResponse>("/auth/login", {
     method: "POST",
     body: credentials,

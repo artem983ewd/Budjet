@@ -12,7 +12,10 @@ export class AccountsService {
     private readonly accountRepository: Repository<Account>,
   ) {}
 
-  async create(userId: string, createAccountDto: CreateAccountDto): Promise<Account> {
+  async create(
+    userId: string,
+    createAccountDto: CreateAccountDto,
+  ): Promise<Account> {
     const account = this.accountRepository.create({
       ...createAccountDto,
       user: { id: userId } as any,
@@ -37,7 +40,11 @@ export class AccountsService {
     return account;
   }
 
-  async update(userId: string, id: number, updateAccountDto: UpdateAccountDto): Promise<Account> {
+  async update(
+    userId: string,
+    id: number,
+    updateAccountDto: UpdateAccountDto,
+  ): Promise<Account> {
     const account = await this.findOne(userId, id);
     Object.assign(account, updateAccountDto);
     return this.accountRepository.save(account);

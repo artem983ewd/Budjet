@@ -29,4 +29,7 @@ export class Debt {
 
   @Column('decimal', { precision: 12, scale: 2 })
   remaining_debt: number;
+
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  icon: string | null;
 }

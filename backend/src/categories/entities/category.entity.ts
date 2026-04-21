@@ -17,9 +17,9 @@ export class Category {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @ManyToOne(() => Category, { onDelete: 'SET NULL' })
+  @ManyToOne(() => Category, { onDelete: 'SET NULL', nullable: true })
   @JoinColumn({ name: 'parent_id' })
-  parent: Category;
+  parent: Category | null;
 
   @OneToMany(() => Category, (category) => category.parent)
   children: Category[];
@@ -29,4 +29,7 @@ export class Category {
 
   @Column({ length: 10 })
   type: 'income' | 'expense';
+
+  @Column({ nullable: true })
+  icon: string;
 }

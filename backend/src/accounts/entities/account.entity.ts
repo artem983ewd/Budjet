@@ -26,4 +26,10 @@ export class Account {
 
   @Column('decimal', { precision: 12, scale: 2 })
   balance: number;
+
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  icon: string | null;
+
+  @Column('decimal', { precision: 12, scale: 2, nullable: true })
+  target_amount: number | null;
 }
