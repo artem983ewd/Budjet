@@ -1,6 +1,8 @@
 import { apiClient } from "@/shared/lib/api";
 import { LoginResponse } from "./login";
 
+export type { LoginResponse };
+
 export interface RegisterCredentials {
   firstName: string;
   lastName: string;

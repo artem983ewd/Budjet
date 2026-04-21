@@ -7,8 +7,7 @@ import {
   Button,
 } from "@mantine/core";
 import { IconAlertTriangle } from "@tabler/icons-react";
-import { useUIStore } from "../../../features/BudgetUI";
-import { DomainStore } from "../../../features/BudgetUI/types/store";
+import { useUIStore, type DomainStore } from "@/shared/lib/stores";
 
 interface DeleteConfirmationModalProps {
   store: DomainStore;

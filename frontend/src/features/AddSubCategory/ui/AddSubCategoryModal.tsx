@@ -4,9 +4,7 @@ import {
   TextInput,
   Button,
 } from "@mantine/core";
-import { IconSelector } from "../../../shared/ui/IconRenderer";
-import { useUIStore } from "../../../features/BudgetUI";
-import { IconName } from "../../../shared/ui/IconRenderer";
+import { IconSelector, IconName, useUIStore } from "@/shared/lib/stores";
 
 interface AddSubCategoryModalProps {
   addSubCategory: (name: string, icon: IconName, catId: string) => void;

@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { CategoryAccordion } from './CategoryAccordion';
 import { MainCategory } from '@/entities/Category/model';
-import { DomainStore } from '@/features/BudgetUI/types/store';
+import { type DomainStore } from '@/shared/lib/stores';
 
 const mockMainCategory: MainCategory = {
   id: 'cat1',
@@ -49,7 +49,7 @@ vi.mock('@/shared/ui/IconRenderer', () => ({
   ),
 }));
 
-vi.mock('@/features/BudgetUI', () => ({
+vi.mock('@/shared/lib/stores', () => ({
   useUIStore: () => ({
     openSubModal: vi.fn(),
     openDeleteModal: vi.fn(),

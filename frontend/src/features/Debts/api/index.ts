@@ -1,6 +1,8 @@
 import { apiClient } from "@/shared/lib/api";
 import { Debt, CreateDebtDto, UpdateDebtDto } from "@/entities/Debt";
 
+export type { CreateDebtDto, UpdateDebtDto };
+
 export const debtsApi = {
   getAll: () => apiClient<Debt[]>("/debts", { method: "GET" }),
   getById: (id: number) => apiClient<Debt>(`/debts/${id}`, { method: "GET" }),

@@ -1,1 +1,1 @@
-export { Goal, CreateGoalDto, UpdateGoalDto } from './model/types';
+export type { Goal, CreateGoalDto, UpdateGoalDto } from './model/types';

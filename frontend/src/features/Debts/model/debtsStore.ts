@@ -6,24 +6,24 @@ interface DebtsStore {
   // Create modal state
   createModalOpened: boolean;
   newDebtName: string;
-  newDebtTotal: number;
-  newDebtRemaining: number;
+  newDebtTotal: number | "";
+  newDebtRemaining: number | "";
   selectedIcon: IconName;
 
   // Edit modal state
   editModalOpened: boolean;
   editingDebt: Debt | null;
   editDebtName: string;
-  editDebtTotal: number;
-  editDebtRemaining: number;
+  editDebtTotal: number | "";
+  editDebtRemaining: number | "";
   editSelectedIcon: IconName;
 
   // Create modal actions
   openCreateModal: () => void;
   closeCreateModal: () => void;
   setNewDebtName: (name: string) => void;
-  setNewDebtTotal: (total: number) => void;
-  setNewDebtRemaining: (remaining: number) => void;
+  setNewDebtTotal: (total: number | "") => void;
+  setNewDebtRemaining: (remaining: number | "") => void;
   setSelectedIcon: (icon: IconName) => void;
   resetCreateForm: () => void;
 
@@ -31,8 +31,8 @@ interface DebtsStore {
   openEditModal: (debt: Debt) => void;
   closeEditModal: () => void;
   setEditDebtName: (name: string) => void;
-  setEditDebtTotal: (total: number) => void;
-  setEditDebtRemaining: (remaining: number) => void;
+  setEditDebtTotal: (total: number | "") => void;
+  setEditDebtRemaining: (remaining: number | "") => void;
   setEditSelectedIcon: (icon: IconName) => void;
 }
 

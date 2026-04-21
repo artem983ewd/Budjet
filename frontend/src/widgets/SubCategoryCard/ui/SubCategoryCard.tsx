@@ -13,8 +13,7 @@ import {
 import { IconCurrencyRubel, IconTrash, IconChevronDown, IconChevronRight } from "@tabler/icons-react";
 import { SubCategory } from "../../../entities/Category/model";
 import { IconRenderer } from "../../../shared/ui/IconRenderer";
-import { useUIStore } from "../../../features/BudgetUI";
-import { DomainStore } from "../../../features/BudgetUI/types/store";
+import { useUIStore, type DomainStore } from "@/shared/lib/stores";
 
 interface SubCategoryCardProps {
   sub: SubCategory;

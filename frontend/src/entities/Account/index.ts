@@ -1,1 +1,1 @@
-export { Account, CreateAccountDto, UpdateAccountDto } from './model/types';
+export type { Account, CreateAccountDto, UpdateAccountDto } from './model/types';

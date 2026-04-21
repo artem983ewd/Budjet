@@ -6,24 +6,24 @@ interface AccountsStore {
   // Create modal state
   createModalOpened: boolean;
   newAccountName: string;
-  newAccountBalance: number;
-  newAccountTarget: number;
+  newAccountBalance: number | "";
+  newAccountTarget: number | "";
   selectedIcon: IconName;
 
   // Edit modal state
   editModalOpened: boolean;
   editingAccount: Account | null;
   editAccountName: string;
-  editAccountBalance: number;
-  editAccountTarget: number;
+  editAccountBalance: number | "";
+  editAccountTarget: number | "";
   editSelectedIcon: IconName;
 
   // Create modal actions
   openCreateModal: () => void;
   closeCreateModal: () => void;
   setNewAccountName: (name: string) => void;
-  setNewAccountBalance: (balance: number) => void;
-  setNewAccountTarget: (target: number) => void;
+  setNewAccountBalance: (balance: number | "") => void;
+  setNewAccountTarget: (target: number | "") => void;
   setSelectedIcon: (icon: IconName) => void;
   resetCreateForm: () => void;
 
@@ -31,8 +31,8 @@ interface AccountsStore {
   openEditModal: (account: Account) => void;
   closeEditModal: () => void;
   setEditAccountName: (name: string) => void;
-  setEditAccountBalance: (balance: number) => void;
-  setEditAccountTarget: (target: number) => void;
+  setEditAccountBalance: (balance: number | "") => void;
+  setEditAccountTarget: (target: number | "") => void;
   setEditSelectedIcon: (icon: IconName) => void;
 }
 

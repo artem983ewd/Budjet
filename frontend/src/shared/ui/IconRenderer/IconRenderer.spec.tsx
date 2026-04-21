@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/react';
-import { IconRenderer, AVAILABLE_ICONS } from './IconRenderer';
+import { IconRenderer, AVAILABLE_ICONS, IconName } from './IconRenderer';
 
 describe('IconRenderer', () => {
   it('renders icon by name', () => {
@@ -14,7 +14,7 @@ describe('IconRenderer', () => {
   });
 
   it('renders default icon (plus) for unknown name', () => {
-    const { container } = render(<IconRenderer name="unknown-icon" size={16} />);
+    const { container } = render(<IconRenderer name={"unknown-icon" as IconName} size={16} />);
     expect(container.querySelector('svg')).toBeInTheDocument();
   });
 

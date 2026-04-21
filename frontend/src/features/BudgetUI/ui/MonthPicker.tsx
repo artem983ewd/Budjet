@@ -8,7 +8,7 @@ import {
   SimpleGrid,
 } from "@mantine/core";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
-import { useSelectedMonth } from "../model/monthStore";
+import { useSelectedMonth } from "@/shared/lib/stores";
 import { useState } from "react";
 
 const MONTHS = [

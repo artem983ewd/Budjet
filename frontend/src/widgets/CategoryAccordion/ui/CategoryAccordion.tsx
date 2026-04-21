@@ -3,8 +3,7 @@ import { IconPlus, IconTrash } from "@tabler/icons-react";
 import { MainCategory } from "../../../entities/Category/model";
 import { IconRenderer } from "../../../shared/ui/IconRenderer";
 import { SubCategoryCard } from "../../SubCategoryCard";
-import { useUIStore } from "../../../features/BudgetUI";
-import { DomainStore } from "../../../features/BudgetUI/types/store";
+import { useUIStore, type DomainStore } from "@/shared/lib/stores";
 
 interface CategoryAccordionProps {
   cat: MainCategory;

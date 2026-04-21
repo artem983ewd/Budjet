@@ -25,10 +25,9 @@ function GoogleRegisterButton() {
   const navigate = useNavigate();
 
   const login = useGoogleLogin({
-    flow: 'redirect',
     onSuccess: async (tokenResponse) => {
       try {
-        const response = await googleAuthApi(tokenResponse.id_token);
+        const response = await googleAuthApi(tokenResponse.access_token);
         localStorage.setItem("access_token", response.access_token);
         localStorage.setItem("refresh_token", response.refresh_token);
         navigate("/main/dashboard", { replace: true });

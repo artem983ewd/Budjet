@@ -2,14 +2,13 @@ import { Box, Stack, Group, Text, Badge, Button, Accordion, Loader, Center } fro
 import { IconPlus } from "@tabler/icons-react";
 import { useCategories, useCreateCategory, useDeleteCategory } from "@/features/Categories";
 import { useTransactionsByDateRange, useCreateTransaction, useDeleteTransaction } from "@/features/Transactions/hooks";
-import { useUIStore, useSelectedMonth, MonthPicker } from "@/features/BudgetUI";
+import { useUIStore, useSelectedMonth, IconName, type DomainStore, type Transaction } from "@/shared/lib/stores";
+import { MonthPicker } from "@/features/BudgetUI";
 import { CategoryAccordion } from "../../../widgets/CategoryAccordion";
 import { AddSubCategoryModal } from "@/features/AddSubCategory";
 import { DeleteConfirmationModal } from "@/features/DeleteConfirmation";
 import { mapCategoriesToMain } from "@/features/Categories/utils/mapCategories";
 import { MainCategory } from "@/entities/Category/model";
-import { IconName } from "@/shared/ui/IconRenderer";
-import { DomainStore, Transaction } from "@/features/BudgetUI/types/store";
 
 export function ExpensesPage() {
   const selectedMonth = useSelectedMonth((s) => s.selectedMonth);

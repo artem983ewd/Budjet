@@ -1,6 +1,8 @@
 import { apiClient } from "@/shared/lib/api";
 import { Account, CreateAccountDto, UpdateAccountDto } from "@/entities/Account";
 
+export type { CreateAccountDto, UpdateAccountDto };
+
 export const accountsApi = {
   getAll: () => apiClient<Account[]>("/accounts", { method: "GET" }),
   getById: (id: number) => apiClient<Account>(`/accounts/${id}`, { method: "GET" }),
