@@ -17,7 +17,7 @@ export class AuthService {
 
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.usersService.findByEmail(email);
-    if (user && (await bcrypt.compare(password, user.password))) {
+    if (user && user.password && (await bcrypt.compare(password, user.password))) {
       const { password, ...result } = user;
       void password;
       return result;
@@ -42,10 +42,9 @@ export class AuthService {
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    const isPasswordValid = await bcrypt.compare(
-      loginDto.password,
-      user.password,
-    );
+    const isPasswordValid = user.password
+      ? await bcrypt.compare(loginDto.password, user.password)
+      : false;
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials');
     }
@@ -111,6 +110,78 @@ export class AuthService {
       };
     } catch {
       throw new UnauthorizedException('Invalid refresh token');
+    }
+  }
+
+  async googleLogin(googleUser: {
+    googleId: string;
+    email: string;
+    username: string;
+    avatar?: string;
+  }): Promise<ITokenResponse> {
+    let user = await this.usersService.findByEmail(googleUser.email);
+
+    if (!user) {
+      const newUser = await this.usersService.register({
+        username: googleUser.username,
+        email: googleUser.email,
+        password: '',
+        googleId: googleUser.googleId,
+      });
+      const payload: IJwtPayload = { sub: newUser.id, email: newUser.email };
+      const config = this.getJwtConfig();
+      return {
+        access_token: this.jwtService.sign(payload, {
+          secret: config.accessSecret,
+          expiresIn: config.accessExpires,
+        }),
+        refresh_token: this.jwtService.sign(payload, {
+          secret: config.refreshSecret,
+          expiresIn: config.refreshExpires,
+        }),
+      };
+    }
+
+    if (!user.googleId) {
+      await this.usersService.updateGoogleId(user.id, googleUser.googleId);
+    }
+
+    const payload: IJwtPayload = { sub: user.id, email: user.email };
+    const config = this.getJwtConfig();
+
+    return {
+      access_token: this.jwtService.sign(payload, {
+        secret: config.accessSecret,
+        expiresIn: config.accessExpires,
+      }),
+      refresh_token: this.jwtService.sign(payload, {
+        secret: config.refreshSecret,
+        expiresIn: config.refreshExpires,
+      }),
+    };
+  }
+
+  async verifyGoogleToken(googleToken: string): Promise<ITokenResponse> {
+    const { OAuth2Client } = require('google-auth-library');
+    const client = new OAuth2Client(this.configService.get<string>('GOOGLE_CLIENT_ID'));
+
+    try {
+      const ticket = await client.verifyIdToken({
+        idToken: googleToken,
+        audience: this.configService.get<string>('GOOGLE_CLIENT_ID'),
+      });
+
+      const payload = ticket.getPayload();
+      const googleUser = {
+        googleId: payload['sub'],
+        email: payload['email'],
+        username: payload['name'] || payload['email'],
+        avatar: payload['picture'],
+      };
+
+      return this.googleLogin(googleUser);
+    } catch (error) {
+      throw new UnauthorizedException('Invalid Google token');
     }
   }
 }

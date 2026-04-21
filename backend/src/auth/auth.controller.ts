@@ -1,11 +1,47 @@
-import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  HttpCode,
+  HttpStatus,
+  Get,
+  Res,
+  Req,
+  UseGuards,
+  Redirect,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
+import { GoogleAuthGuard } from './guards/google.guard';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly configService: ConfigService,
+  ) {}
+
+  @Get('google')
+  @UseGuards(GoogleAuthGuard)
+  @Redirect()
+  googleAuth() {}
+
+  @Get('google/callback')
+  @UseGuards(GoogleAuthGuard)
+  async googleCallback(@Req() req: any, @Res() res: any) {
+    const frontendUrl = this.configService.get<string>('FRONTEND_URL') || 'http://localhost:5173';
+    const tokens = await this.authService.googleLogin(req.user);
+    res.redirect(`${frontendUrl}?access_token=${tokens.access_token}&refresh_token=${tokens.refresh_token}`);
+  }
+
+  @Post('google/token')
+  @HttpCode(HttpStatus.OK)
+  async googleToken(@Body() body: { googleToken: string }) {
+    const { googleToken } = body;
+    return this.authService.verifyGoogleToken(googleToken);
+  }
 
   @Post('login')
   @HttpCode(HttpStatus.OK)

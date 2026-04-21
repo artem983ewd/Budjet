@@ -5,6 +5,11 @@ import { LoginPage } from '../LoginPage';
 import * as authModule from '@/features/Auth';
 import * as router from 'react-router-dom';
 
+vi.mock('@react-oauth/google', () => ({
+  GoogleOAuthProvider: ({ children }: { children: React.ReactNode }) => children,
+  useGoogleLogin: () => vi.fn(),
+}));
+
 vi.mock('@/features/Auth', () => ({
   useLoginForm: vi.fn().mockReturnValue({
     handleSubmit: vi.fn((e: React.FormEvent<HTMLFormElement>) => {
@@ -13,6 +18,7 @@ vi.mock('@/features/Auth', () => ({
     loading: false,
     errors: {},
   }),
+  googleAuthApi: vi.fn(),
 }));
 
 const mockNavigate = vi.fn();

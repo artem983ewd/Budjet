@@ -20,16 +20,24 @@ export class UsersService {
     if (existingUser) {
       throw new ConflictException('Email уже существует');
     }
-    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+    let hashedPassword: string | undefined;
+    if (createUserDto.password) {
+      hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+    }
     const user: Partial<User> = {
       email: createUserDto.email,
       username: createUserDto.username,
       password: hashedPassword,
+      googleId: createUserDto.googleId,
     };
     const savedUser = await this.userRepository.save(user);
     const { password, ...result } = savedUser;
     void password;
     return result;
+  }
+
+  async updateGoogleId(id: string, googleId: string): Promise<void> {
+    await this.userRepository.update(id, { googleId });
   }
 
   async findByEmail(email: string): Promise<User | null> {

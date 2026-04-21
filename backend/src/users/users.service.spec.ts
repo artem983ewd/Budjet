@@ -15,8 +15,7 @@ describe('UsersService', () => {
     email: 'test@example.com',
     username: 'John Doe',
     password: '$2b$10$hashedpassword',
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    googleId: null,
   };
 
   beforeEach(async () => {
@@ -66,8 +65,7 @@ describe('UsersService', () => {
         id: mockUser.id,
         email: createUserDto.email,
         username: createUserDto.username,
-        createdAt: mockUser.createdAt,
-        updatedAt: mockUser.updatedAt,
+        googleId: mockUser.googleId,
       });
       expect(result).not.toHaveProperty('password');
       expect(userRepository.findOneBy).toHaveBeenCalledWith({ email: createUserDto.email });

@@ -13,13 +13,50 @@ import {
   useMantineColorScheme,
   useComputedColorScheme,
   Center,
+  Divider,
 } from "@mantine/core";
 import { IconSun, IconMoon } from "@tabler/icons-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { GoogleOAuthProvider, useGoogleLogin } from "@react-oauth/google";
 import { useLoginForm } from "@/features/Auth";
+import { googleAuthApi } from "@/features/Auth/api/googleAuth";
 
-export function LoginPage() {
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
+
+function GoogleLoginButton() {
+  const navigate = useNavigate();
+
+  const login = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      try {
+        const response = await googleAuthApi(tokenResponse.access_token);
+        localStorage.setItem("access_token", response.access_token);
+        localStorage.setItem("refresh_token", response.refresh_token);
+        navigate("/main/dashboard", { replace: true });
+      } catch (error) {
+        console.error("Google login failed:", error);
+      }
+    },
+    onError: (error) => {
+      console.error("Google login error:", error);
+    },
+  });
+
+  return (
+    <Button
+      variant="default"
+      fullWidth
+      mt="md"
+      radius="md"
+      onClick={() => login()}
+    >
+      Continue with Google
+    </Button>
+  );
+}
+
+function LoginPageContent() {
   const navigate = useNavigate();
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme("dark", {
@@ -101,6 +138,10 @@ export function LoginPage() {
             </Button>
           </form>
 
+          <Divider label="Or continue with" labelPosition="center" my="lg" />
+
+          <GoogleLoginButton />
+
           <Text ta="center" mt="md" size="sm">
             Don&apos;t have an account?{" "}
             <Anchor fw={500} component={Link} to="/register">
@@ -110,5 +151,13 @@ export function LoginPage() {
         </Paper>
       </Container>
     </Center>
+  );
+}
+
+export function LoginPage() {
+  return (
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+      <LoginPageContent />
+    </GoogleOAuthProvider>
   );
 }
