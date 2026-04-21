@@ -1,8 +1,8 @@
 import { Box, Stack, Group, Text, Badge, Button, Accordion, Loader, Center } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import { useCategories, useCreateCategory, useDeleteCategory } from "@/features/Categories";
-import { useTransactions, useCreateTransaction, useDeleteTransaction } from "@/features/Transactions/hooks";
-import { useUIStore } from "@/features/BudgetUI";
+import { useTransactionsByDateRange, useCreateTransaction, useDeleteTransaction } from "@/features/Transactions/hooks";
+import { useUIStore, useSelectedMonth, MonthPicker } from "@/features/BudgetUI";
 import { CategoryAccordion } from "../../../widgets/CategoryAccordion";
 import { AddSubCategoryModal } from "@/features/AddSubCategory";
 import { DeleteConfirmationModal } from "@/features/DeleteConfirmation";
@@ -12,8 +12,14 @@ import { IconName } from "@/shared/ui/IconRenderer";
 import { DomainStore, Transaction } from "@/features/BudgetUI/types/store";
 
 export function ExpensesPage() {
+  const selectedMonth = useSelectedMonth((s) => s.selectedMonth);
+  const year = selectedMonth.getFullYear();
+  const month = selectedMonth.getMonth();
+  const startDate = new Date(year, month, 1).toISOString();
+  const endDate = new Date(year, month + 1, 0, 23, 59, 59, 999).toISOString();
+
   const { data: categoriesData = [], isLoading: isLoadingCategories } = useCategories();
-  const { data: transactionsData = [], isLoading: isLoadingTransactions } = useTransactions();
+  const { data: transactionsData = [], isLoading: isLoadingTransactions } = useTransactionsByDateRange(startDate, endDate);
   const createCategory = useCreateCategory();
   const deleteCategory = useDeleteCategory();
   const createTransaction = useCreateTransaction();
@@ -48,10 +54,11 @@ export function ExpensesPage() {
     getSubTotal,
     getMainTotal,
     addTransaction: (subCategoryId: string, amount: number) => {
+      const transactionDate = new Date(selectedMonth.getFullYear(), selectedMonth.getMonth(), new Date().getDate());
       createTransaction.mutate({
         categoryId: parseInt(subCategoryId),
         amount,
-        transactionDate: new Date(),
+        transactionDate,
       });
     },
     deleteTransaction: (id: string) => {
@@ -106,7 +113,7 @@ export function ExpensesPage() {
   return (
     <Box p="md" style={{ width: "100%", maxWidth: "800px", margin: "auto" }}>
       <Stack gap="lg">
-        <Group justify="space-between">
+        <Group justify="space-between" align="center">
           <Text size="xl" fw={700}>
             Расходы
           </Text>
@@ -114,6 +121,8 @@ export function ExpensesPage() {
             Всего: {total} ₽
           </Badge>
         </Group>
+
+        <MonthPicker />
 
         <Button
           variant="light"

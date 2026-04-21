@@ -6,6 +6,7 @@ import {
   Delete,
   Body,
   Param,
+  Query,
   ParseIntPipe,
   UseGuards,
   Request,
@@ -13,6 +14,7 @@ import {
 import { TransactionsService } from './transactions.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
+import { DateRangeQueryDto } from './dto/date-range-query.dto';
 import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('transactions')
@@ -32,7 +34,14 @@ export class TransactionsController {
   }
 
   @Get()
-  findAll(@Request() req: any) {
+  findAll(@Request() req: any, @Query() query: DateRangeQueryDto) {
+    if (query.startDate && query.endDate) {
+      return this.transactionsService.findByDateRange(
+        req.user.userId,
+        query.startDate,
+        query.endDate,
+      );
+    }
     return this.transactionsService.findAll(req.user.userId);
   }
 

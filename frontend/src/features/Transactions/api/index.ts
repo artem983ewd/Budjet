@@ -42,6 +42,12 @@ export interface UpdateTransactionDto {
 export const transactionsApi = {
   getAll: () => apiClient<TransactionApi[]>("/transactions", { method: "GET" }),
 
+  getByDateRange: (startDate: string, endDate: string) =>
+    apiClient<TransactionApi[]>(
+      `/transactions?startDate=${startDate}&endDate=${endDate}`,
+      { method: "GET" },
+    ),
+
   getById: (id: number) =>
     apiClient<TransactionApi>(`/transactions/${id}`, { method: "GET" }),
 

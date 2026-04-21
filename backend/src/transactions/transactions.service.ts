@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Between, MoreThanOrEqual, LessThanOrEqual } from 'typeorm';
 import { Transaction } from './entities/transaction.entity';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
@@ -30,6 +30,26 @@ export class TransactionsService {
   async findAll(userId: string): Promise<Transaction[]> {
     return this.transactionRepository.find({
       where: { user: { id: userId } },
+      relations: ['category'],
+      order: { transactionDate: 'DESC' },
+    });
+  }
+
+  async findByDateRange(
+    userId: string,
+    startDate: string,
+    endDate: string,
+  ): Promise<Transaction[]> {
+    const start = new Date(startDate);
+    start.setHours(0, 0, 0, 0);
+    const end = new Date(endDate);
+    end.setHours(23, 59, 59, 999);
+
+    return this.transactionRepository.find({
+      where: {
+        user: { id: userId },
+        transactionDate: Between(start, end),
+      },
       relations: ['category'],
       order: { transactionDate: 'DESC' },
     });

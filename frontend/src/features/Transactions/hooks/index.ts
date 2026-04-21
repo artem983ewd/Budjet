@@ -8,6 +8,14 @@ export const useTransactions = () => {
   });
 };
 
+export const useTransactionsByDateRange = (startDate: string, endDate: string) => {
+  return useQuery({
+    queryKey: ["transactions", "dateRange", startDate, endDate],
+    queryFn: () => transactionsApi.getByDateRange(startDate, endDate),
+    enabled: !!startDate && !!endDate,
+  });
+};
+
 export const useTransaction = (id: number) => {
   return useQuery({
     queryKey: ["transactions", id],
