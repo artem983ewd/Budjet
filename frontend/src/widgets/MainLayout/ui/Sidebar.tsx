@@ -1,10 +1,17 @@
-import { AppShell, NavLink, Stack } from "@mantine/core";
+import { AppShell, NavLink, Stack, Divider } from "@mantine/core";
 import { useLocation, useNavigate } from "react-router-dom";
+import { IconLogout } from "@tabler/icons-react";
 import { sidebarItems } from "../model/sidebarItems";
 
 export function Sidebar() {
   const location = useLocation();
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    navigate("/");
+  };
 
   return (
     <AppShell.Navbar p="md">
@@ -19,6 +26,14 @@ export function Sidebar() {
             style={{ borderRadius: "var(--mantine-radius-md)" }}
           />
         ))}
+        <Divider my="sm" />
+        <NavLink
+          label="Выйти"
+          leftSection={<IconLogout size={20} />}
+          onClick={handleLogout}
+          style={{ borderRadius: "var(--mantine-radius-md)" }}
+          color="red"
+        />
       </Stack>
     </AppShell.Navbar>
   );

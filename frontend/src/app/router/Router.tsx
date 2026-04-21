@@ -8,8 +8,11 @@ import { RegisterPage } from "../../pages/RegisterPage";
 import { ForgotPasswordPage } from "../../pages/ForgotPasswordPage";
 import { MainLayout } from "../../widgets/MainLayout";
 import { DashboardLayout } from "../../pages/DashboardPage/DashboardLayout";
-import { Tab1Page } from "../../pages/DashboardPage/ui/Tab1Page";
-import { Tab2Page } from "../../pages/DashboardPage/ui/Tab2Page";
+import { IncomePage } from "../../pages/DashboardPage/ui/IncomePage";
+import { ExpensesPage } from "../../pages/DashboardPage/ui/ExpensesPage";
+import { AccountsPage } from "../../pages/DashboardPage/ui/AccountsPage";
+import { DebtsPage } from "../../pages/DashboardPage/ui/DebtsPage";
+import { AnalyticsPage } from "../../pages/DashboardPage/ui/AnalyticsPage";
 import { ProfilePage } from "../../pages/ProfilePage";
 import { SettingsPage } from "../../pages/SettingsPage";
 
@@ -39,8 +42,11 @@ const router = createBrowserRouter([
         element: <DashboardLayout />,
         children: [
           { index: true, element: <Navigate to="tab1" replace /> },
-          { path: "tab1", element: <Tab1Page /> },
-          { path: "tab2", element: <Tab2Page /> },
+          { path: "tab1", element: <IncomePage /> },
+          { path: "tab2", element: <ExpensesPage /> },
+          { path: "accounts", element: <AccountsPage /> },
+          { path: "debts", element: <DebtsPage /> },
+          { path: "analytics", element: <AnalyticsPage /> },
         ],
       },
       {

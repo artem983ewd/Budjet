@@ -1,9 +1,11 @@
 import { apiClient } from "@/shared/lib/api";
-import { LoginCredentials, LoginResponse } from "./login";
+import { LoginResponse } from "./login";
 
-export interface RegisterCredentials extends LoginCredentials {
+export interface RegisterCredentials {
   firstName: string;
   lastName: string;
+  email: string;
+  password: string;
 }
 
 export async function registerApi(credentials: RegisterCredentials): Promise<LoginResponse> {

@@ -2,9 +2,13 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { ValidationExceptionFilter } from './filters/validation-exception.filter';
+import { AllExceptionsFilter } from './filters/all-exceptions.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // Global API prefix
+  app.setGlobalPrefix('api');
 
   // Enable CORS
   app.enableCors({
@@ -22,8 +26,11 @@ async function bootstrap() {
     }),
   );
 
-  // Global Exception Filter for validation errors
-  app.useGlobalFilters(new ValidationExceptionFilter());
+  // Global Exception Filters
+  app.useGlobalFilters(
+    new ValidationExceptionFilter(),
+    new AllExceptionsFilter(),
+  );
 
   await app.listen(process.env.PORT ?? 3000);
 }

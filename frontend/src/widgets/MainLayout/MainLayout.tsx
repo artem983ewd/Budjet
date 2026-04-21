@@ -8,13 +8,14 @@ import {
   NavLink,
   Stack,
   ActionIcon,
+  Divider,
   useMantineColorScheme,
   useComputedColorScheme,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { sidebarItems } from "./model/sidebarItems";
-import { IconMoon, IconSun } from "@tabler/icons-react";
+import { IconMoon, IconSun, IconLogout } from "@tabler/icons-react";
 
 export function MainLayout() {
   const [sidebarOpened, setSidebarOpened] = useState(true);
@@ -36,6 +37,12 @@ export function MainLayout() {
     } else {
       setSidebarOpened(!sidebarOpened);
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    navigate("/");
   };
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme("light", {
@@ -85,6 +92,14 @@ export function MainLayout() {
                 style={{ borderRadius: "var(--mantine-radius-md)" }}
               />
             ))}
+            <Divider my="sm" />
+            <NavLink
+              label="Выйти"
+              leftSection={<IconLogout size={20} />}
+              onClick={handleLogout}
+              style={{ borderRadius: "var(--mantine-radius-md)" }}
+              color="red"
+            />
           </Stack>
         </AppShell.Navbar>
       )}
@@ -108,6 +123,14 @@ export function MainLayout() {
                 style={{ borderRadius: "var(--mantine-radius-md)" }}
               />
             ))}
+            <Divider my="sm" />
+            <NavLink
+              label="Выйти"
+              leftSection={<IconLogout size={20} />}
+              onClick={handleLogout}
+              style={{ borderRadius: "var(--mantine-radius-md)" }}
+              color="red"
+            />
           </Stack>
         </Drawer>
       )}
