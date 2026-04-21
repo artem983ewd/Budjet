@@ -1,13 +1,18 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { RegisterCredentials, LoginResponse } from './register';
+import { RegisterCredentials, LoginResponse, registerApi } from './register';
+import { ApiException } from '@/shared/lib/api/client';
 
-vi.mock('@/shared/lib/api', () => ({
-  apiClient: vi.fn(),
-}));
+vi.mock('@/shared/lib/api/client', async (importOriginal) => {
+  const actual = await importOriginal() as { apiClient: typeof vi.fn; ApiException: typeof ApiException };
+  return {
+    ...actual,
+    apiClient: vi.fn(),
+  };
+});
 
 import { apiClient } from '@/shared/lib/api/client';
 
-const mockApiClient = apiClient as unknown as jest.Mock;
+const mockApiClient = apiClient as ReturnType<typeof vi.fn>;
 
 describe('registerApi', () => {
   beforeEach(() => {
@@ -15,7 +20,6 @@ describe('registerApi', () => {
   });
 
   it('should call apiClient with correct endpoint and credentials', async () => {
-    const { registerApi } = await import('./register');
     const credentials: RegisterCredentials = {
       firstName: 'John',
       lastName: 'Doe',
@@ -39,8 +43,6 @@ describe('registerApi', () => {
   });
 
   it('should throw ApiException on error response', async () => {
-    const { registerApi } = await import('./register');
-    const { ApiException } = await import('@/shared/lib/api/client');
     const credentials: RegisterCredentials = {
       firstName: 'John',
       lastName: 'Doe',
@@ -55,7 +57,6 @@ describe('registerApi', () => {
   });
 
   it('should return tokens on successful registration', async () => {
-    const { registerApi } = await import('./register');
     const credentials: RegisterCredentials = {
       firstName: 'John',
       lastName: 'Doe',

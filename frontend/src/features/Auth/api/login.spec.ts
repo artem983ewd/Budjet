@@ -1,13 +1,18 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { LoginCredentials, LoginResponse } from './login';
+import { LoginCredentials, LoginResponse, loginApi } from './login';
+import { ApiException } from '@/shared/lib/api/client';
 
-vi.mock('@/shared/lib/api', () => ({
-  apiClient: vi.fn(),
-}));
+vi.mock('@/shared/lib/api/client', async (importOriginal) => {
+  const actual = await importOriginal() as { apiClient: typeof vi.fn; ApiException: typeof ApiException };
+  return {
+    ...actual,
+    apiClient: vi.fn(),
+  };
+});
 
 import { apiClient } from '@/shared/lib/api/client';
 
-const mockApiClient = apiClient as unknown as jest.Mock;
+const mockApiClient = apiClient as ReturnType<typeof vi.fn>;
 
 describe('loginApi', () => {
   beforeEach(() => {
@@ -15,7 +20,6 @@ describe('loginApi', () => {
   });
 
   it('should call apiClient with correct endpoint and credentials', async () => {
-    const { loginApi } = await import('./login');
     const credentials: LoginCredentials = {
       email: 'test@example.com',
       password: 'password123',
@@ -37,8 +41,6 @@ describe('loginApi', () => {
   });
 
   it('should throw ApiException on error response', async () => {
-    const { loginApi } = await import('./login');
-    const { ApiException } = await import('@/shared/lib/api/client');
     const credentials: LoginCredentials = {
       email: 'invalid@example.com',
       password: 'wrongpassword',
@@ -51,7 +53,6 @@ describe('loginApi', () => {
   });
 
   it('should return tokens on successful login', async () => {
-    const { loginApi } = await import('./login');
     const credentials: LoginCredentials = {
       email: 'test@example.com',
       password: 'password123',
