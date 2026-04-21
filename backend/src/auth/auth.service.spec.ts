@@ -77,7 +77,10 @@ describe('AuthService', () => {
         password: hashedPassword,
       });
 
-      const result = await authService.validateUser('test@example.com', 'password123');
+      const result = await authService.validateUser(
+        'test@example.com',
+        'password123',
+      );
 
       expect(result).toEqual({
         id: mockUser.id,
@@ -92,7 +95,10 @@ describe('AuthService', () => {
     it('should return null when user is not found', async () => {
       usersService.findByEmail.mockResolvedValue(null);
 
-      const result = await authService.validateUser('nonexistent@example.com', 'password123');
+      const result = await authService.validateUser(
+        'nonexistent@example.com',
+        'password123',
+      );
 
       expect(result).toBeNull();
     });
@@ -104,7 +110,10 @@ describe('AuthService', () => {
         password: hashedPassword,
       });
 
-      const result = await authService.validateUser('test@example.com', 'wrong-password');
+      const result = await authService.validateUser(
+        'test@example.com',
+        'wrong-password',
+      );
 
       expect(result).toBeNull();
     });
@@ -201,9 +210,13 @@ describe('AuthService', () => {
     });
 
     it('should throw ConflictException when email already exists', async () => {
-      usersService.register.mockRejectedValue(new ConflictException('Email уже существует'));
+      usersService.register.mockRejectedValue(
+        new ConflictException('Email уже существует'),
+      );
 
-      await expect(authService.register(registerDto)).rejects.toThrow(ConflictException);
+      await expect(authService.register(registerDto)).rejects.toThrow(
+        ConflictException,
+      );
     });
   });
 
@@ -240,9 +253,9 @@ describe('AuthService', () => {
         throw new Error('Invalid token');
       });
 
-      await expect(authService.refresh('invalid-refresh-token')).rejects.toThrow(
-        UnauthorizedException,
-      );
+      await expect(
+        authService.refresh('invalid-refresh-token'),
+      ).rejects.toThrow(UnauthorizedException);
     });
   });
 });

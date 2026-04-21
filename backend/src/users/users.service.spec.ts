@@ -68,14 +68,18 @@ describe('UsersService', () => {
         googleId: mockUser.googleId,
       });
       expect(result).not.toHaveProperty('password');
-      expect(userRepository.findOneBy).toHaveBeenCalledWith({ email: createUserDto.email });
+      expect(userRepository.findOneBy).toHaveBeenCalledWith({
+        email: createUserDto.email,
+      });
       expect(userRepository.save).toHaveBeenCalled();
     });
 
     it('should throw ConflictException when email already exists', async () => {
       userRepository.findOneBy.mockResolvedValue(mockUser as User);
 
-      await expect(usersService.register(createUserDto)).rejects.toThrow(ConflictException);
+      await expect(usersService.register(createUserDto)).rejects.toThrow(
+        ConflictException,
+      );
     });
   });
 
@@ -86,7 +90,9 @@ describe('UsersService', () => {
       const result = await usersService.findByEmail('test@example.com');
 
       expect(result).toEqual(mockUser);
-      expect(userRepository.findOneBy).toHaveBeenCalledWith({ email: 'test@example.com' });
+      expect(userRepository.findOneBy).toHaveBeenCalledWith({
+        email: 'test@example.com',
+      });
     });
 
     it('should return null when user not found', async () => {
@@ -105,7 +111,9 @@ describe('UsersService', () => {
       const result = await usersService.findById('user-uuid-123');
 
       expect(result).toEqual(mockUser);
-      expect(userRepository.findOneBy).toHaveBeenCalledWith({ id: 'user-uuid-123' });
+      expect(userRepository.findOneBy).toHaveBeenCalledWith({
+        id: 'user-uuid-123',
+      });
     });
 
     it('should return null when user not found', async () => {

@@ -40,6 +40,10 @@ export class UsersService {
     await this.userRepository.update(id, { googleId });
   }
 
+  async findByGoogleId(googleId: string): Promise<User | null> {
+    return this.userRepository.findOneBy({ googleId });
+  }
+
   async findByEmail(email: string): Promise<User | null> {
     return this.userRepository.findOneBy({ email });
   }

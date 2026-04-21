@@ -5,9 +5,9 @@ export interface GoogleTokenResponse {
   refresh_token: string;
 }
 
-export async function googleAuthApi(googleToken: string): Promise<GoogleTokenResponse> {
+export async function googleAuthApi(accessToken: string): Promise<GoogleTokenResponse> {
   return apiClient<GoogleTokenResponse>("/auth/google/token", {
     method: "POST",
-    body: { googleToken },
+    body: { accessToken },
   });
 }

@@ -41,7 +41,11 @@ export class CategoriesController {
     @Param('id', ParseIntPipe) id: number,
     @Body() updateCategoryDto: UpdateCategoryDto,
   ) {
-    return this.categoriesService.update(req.user.userId, id, updateCategoryDto);
+    return this.categoriesService.update(
+      req.user.userId,
+      id,
+      updateCategoryDto,
+    );
   }
 
   @Delete(':id')

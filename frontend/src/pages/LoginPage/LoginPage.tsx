@@ -17,7 +17,7 @@ import {
 } from "@mantine/core";
 import { IconSun, IconMoon } from "@tabler/icons-react";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { GoogleOAuthProvider, useGoogleLogin } from "@react-oauth/google";
 import { useLoginForm } from "@/features/Auth";
 import { googleAuthApi } from "@/features/Auth/api/googleAuth";
@@ -26,33 +26,54 @@ const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
 
 function GoogleLoginButton() {
   const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
 
   const login = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
+      console.log('Google token response:', tokenResponse);
+      setError(null);
+      
+      if (!tokenResponse?.access_token) {
+        console.error('No access_token in response:', tokenResponse);
+        setError('Failed to get Google access token');
+        return;
+      }
+      
       try {
         const response = await googleAuthApi(tokenResponse.access_token);
+        console.log('Backend response:', response);
         localStorage.setItem("access_token", response.access_token);
         localStorage.setItem("refresh_token", response.refresh_token);
         navigate("/main/dashboard", { replace: true });
-      } catch (error) {
-        console.error("Google login failed:", error);
+      } catch (err: any) {
+        const message = err?.response?.data?.message || err?.message || 'Google login failed';
+        console.error("Google login failed:", err);
+        setError(message);
       }
     },
-    onError: (error) => {
-      console.error("Google login error:", error);
+    onError: (err) => {
+      console.error("Google login error:", err);
+      setError('Google authentication failed');
     },
   });
 
   return (
-    <Button
-      variant="default"
-      fullWidth
-      mt="md"
-      radius="md"
-      onClick={() => login()}
-    >
-      Continue with Google
-    </Button>
+    <>
+      <Button
+        variant="default"
+        fullWidth
+        mt="md"
+        radius="md"
+        onClick={() => login()}
+      >
+        Continue with Google
+      </Button>
+      {error && (
+        <Text c="red" ta="center" mt="sm" size="sm">
+          {error}
+        </Text>
+      )}
+    </>
   );
 }
 

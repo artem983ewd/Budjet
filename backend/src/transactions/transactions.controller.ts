@@ -25,7 +25,10 @@ export class TransactionsController {
     @Request() req: any,
     @Body() createTransactionDto: CreateTransactionDto,
   ) {
-    return this.transactionsService.create(req.user.userId, createTransactionDto);
+    return this.transactionsService.create(
+      req.user.userId,
+      createTransactionDto,
+    );
   }
 
   @Get()
