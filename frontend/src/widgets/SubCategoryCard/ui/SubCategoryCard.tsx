@@ -109,7 +109,7 @@ export const SubCategoryCard: React.FC<SubCategoryCardProps> = ({ sub, store }) 
               e.stopPropagation();
               handleDeleteSubCategory();
             }}
-            style={{ color: "var(--mantine-color-red-6)", padding: 2 }}
+            style={{ color: "var(--mantine-color-gray-6)", padding: 2 }}
           >
             <IconTrash size={12} />
           </UnstyledButton>
@@ -128,7 +128,7 @@ export const SubCategoryCard: React.FC<SubCategoryCardProps> = ({ sub, store }) 
                 </Text>
                 <ActionIcon
                   variant="subtle"
-                  color="red"
+                  color="gray"
                   size="xs"
                   onClick={() => store.deleteTransaction(t.id)}
                 >

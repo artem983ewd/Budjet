@@ -89,7 +89,7 @@ function DebtCard({ debt, paid, progress, onEdit, onDelete, onPay }: DebtCardPro
         </Group>
         <Group gap="xs">
           <Tooltip label="Удалить" withArrow>
-            <ActionIcon variant="subtle" color="red" onClick={onDelete}>
+            <ActionIcon variant="subtle" color="gray" onClick={onDelete}>
               <IconTrash size={16} />
             </ActionIcon>
           </Tooltip>
@@ -101,12 +101,12 @@ function DebtCard({ debt, paid, progress, onEdit, onDelete, onPay }: DebtCardPro
         </Group>
       </Group>
 
-      <Progress value={progress} size="lg" radius="sm" mb="md" color="orange" />
+      <Progress value={progress} size="lg" radius="sm" mb="md" color="blue" />
 
       <Group justify="space-between" align="flex-end">
         <Stack gap={4}>
           <Text size="xs" c="dimmed">Осталось</Text>
-          <Text size="lg" fw={700} c="red">{remaining.toLocaleString()} ₽</Text>
+          <Text size="lg" fw={700} c="blue">{remaining.toLocaleString()} ₽</Text>
         </Stack>
         
         {isEditing ? (

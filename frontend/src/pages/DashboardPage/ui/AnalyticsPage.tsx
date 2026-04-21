@@ -224,7 +224,7 @@ export function AnalyticsPage() {
           <Paper shadow="xs" p="md" radius="md" withBorder>
             <Stack gap="xs">
               <Group gap="xs">
-                <ThemeIcon variant="light" color="red" size="sm">
+                <ThemeIcon variant="light" color="blue" size="sm">
                   <IconTrendingUp size={14} />
                 </ThemeIcon>
                 <Text size="sm" c="dimmed">Расходы за период</Text>

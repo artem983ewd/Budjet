@@ -108,7 +108,7 @@ function GoalCard({ goal, onContribute, onDelete }: GoalCardProps) {
           <IconTarget size={20} color="var(--mantine-color-blue-6)" />
           <Text fw={600}>{goal.name}</Text>
         </Group>
-        <ActionIcon variant="subtle" color="red" onClick={() => onDelete(goal.id)}>
+        <ActionIcon variant="subtle" color="gray" onClick={() => onDelete(goal.id)}>
           <IconTrash size={16} />
         </ActionIcon>
       </Group>

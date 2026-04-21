@@ -91,7 +91,7 @@ function AccountCard({
         </Group>
         <Group gap="xs">
           <Tooltip label="Удалить" withArrow>
-            <ActionIcon variant="subtle" color="red" onClick={onDelete}>
+            <ActionIcon variant="subtle" color="gray" onClick={onDelete}>
               <IconTrash size={16} />
             </ActionIcon>
           </Tooltip>

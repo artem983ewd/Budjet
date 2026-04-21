@@ -50,7 +50,7 @@ export const CategoryAccordion: React.FC<CategoryAccordionProps> = ({ cat, store
               <UnstyledButton
                 component="span"
                 onClick={handleDeleteCategory}
-                style={{ color: "var(--mantine-color-red-6)", padding: 4 }}
+                style={{ color: "var(--mantine-color-gray-6)", padding: 4 }}
               >
                 <IconTrash size={18} />
               </UnstyledButton>

@@ -98,7 +98,7 @@ export function MainLayout() {
               leftSection={<IconLogout size={20} />}
               onClick={handleLogout}
               style={{ borderRadius: "var(--mantine-radius-md)" }}
-              color="red"
+              color="gray"
             />
           </Stack>
         </AppShell.Navbar>
@@ -129,7 +129,7 @@ export function MainLayout() {
               leftSection={<IconLogout size={20} />}
               onClick={handleLogout}
               style={{ borderRadius: "var(--mantine-radius-md)" }}
-              color="red"
+              color="gray"
             />
           </Stack>
         </Drawer>
