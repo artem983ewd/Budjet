@@ -1,0 +1,48 @@
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { PassportStrategy } from '@nestjs/passport';
+import { Strategy, VerifyCallback } from 'passport-google-oauth20';
+import { ConfigService } from '@nestjs/config';
+
+@Injectable()
+export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
+  constructor(private configService: ConfigService) {
+    const clientId = configService.get<string>('GOOGLE_CLIENT_ID');
+    const clientSecret = configService.get<string>('GOOGLE_CLIENT_SECRET');
+    const callbackURL = configService.get<string>('GOOGLE_CALLBACK_URL');
+
+    if (!clientId || !clientSecret || !callbackURL) {
+      throw new Error('Missing required Google OAuth environment variables');
+    }
+
+    super({
+      clientID: clientId,
+      clientSecret,
+      callbackURL,
+      scope: ['email', 'profile'],
+    });
+  }
+
+  async validate(
+    accessToken: string,
+    refreshToken: string,
+    profile: any,
+    done: VerifyCallback,
+  ): Promise<any> {
+    const { id, displayName, emails, photos } = profile;
+
+    if (!emails || !emails.length) {
+      return done(new UnauthorizedException('No email found'), null);
+    }
+
+    const user = {
+      googleId: id,
+      email: emails[0].value,
+      username: displayName || emails[0].value.split('@')[0],
+      avatar: photos?.[0]?.value,
+      accessToken,
+      refreshToken,
+    };
+
+    done(null, user);
+  }
+}

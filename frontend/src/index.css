@@ -1,0 +1,92 @@
+html[data-mantine-color-scheme="light"] {
+  --mantine-color-body: #FFFFFF;
+  --mantine-color-background: #FFFFFF;
+  --mantine-color-surface: #F3F4F6;
+  --mantine-color-card: #FAFAFA;
+  --mantine-color-text: #111827;
+  --mantine-color-dimmed: #6B7280;
+  --mantine-color-default-border: #E5E7EB;
+  --mantine-color-default-hover: #E5E7EB;
+  --mantine-color-default-active: #D1D5DB;
+  --mantine-color-default-filled: #F3F4F6;
+  --mantine-color-input-base: #F3F4F6;
+  --mantine-color-blue-5: #3B82F6;
+  --mantine-color-blue-6: #2563EB;
+  --mantine-color-red-5: #EF4444;
+  --mantine-color-red-6: #DC2626;
+  --mantine-color-green-5: #10B981;
+  --mantine-color-green-6: #059669;
+  --mantine-color-yellow-5: #F59E0B;
+  --mantine-color-yellow-6: #D97706;
+
+  --color-bg: #FFFFFF;
+  --color-surface: #F3F4F6;
+  --color-card: #FAFAFA;
+  --color-text: #111827;
+  --color-text-muted: #6B7280;
+  --color-border: #E5E7EB;
+  --color-accent: #3B82F6;
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-danger: #EF4444;
+}
+
+html[data-mantine-color-scheme="dark"] {
+  --mantine-color-body: #0F0F0F;
+  --mantine-color-background: #0F0F0F;
+  --mantine-color-surface: #1A1A1A;
+  --mantine-color-card: #262626;
+  --mantine-color-text: #F9FAFB;
+  --mantine-color-dimmed: #9CA3AF;
+  --mantine-color-default-border: #374151;
+  --mantine-color-default-hover: #374151;
+  --mantine-color-default-active: #4B5563;
+  --mantine-color-default-filled: #1A1A1A;
+  --mantine-color-input-base: #1A1A1A;
+  --mantine-color-blue-5: #60A5FA;
+  --mantine-color-blue-6: #3B82F6;
+  --mantine-color-red-5: #F87171;
+  --mantine-color-red-6: #EF4444;
+  --mantine-color-green-5: #34D399;
+  --mantine-color-green-6: #10B981;
+  --mantine-color-yellow-5: #FBBF24;
+  --mantine-color-yellow-6: #F59E0B;
+
+  --color-bg: #0F0F0F;
+  --color-surface: #1A1A1A;
+  --color-card: #262626;
+  --color-text: #F9FAFB;
+  --color-text-muted: #9CA3AF;
+  --color-border: #374151;
+  --color-accent: #60A5FA;
+  --color-success: #34D399;
+  --color-warning: #FBBF24;
+  --color-danger: #F87171;
+}
+
+body {
+  background-color: var(--mantine-color-body);
+  color: var(--mantine-color-text);
+}
+
+/* Native date input - respects color-scheme for calendar popup */
+input[type="date"] {
+  color-scheme: light;
+}
+
+html[data-mantine-color-scheme="dark"] input[type="date"] {
+  color-scheme: dark;
+}
+
+/* Mantine Input overrides for date inputs */
+.mantine-TextInput-input,
+.mantine-Input-input {
+  background-color: var(--mantine-color-input-base) !important;
+  border-color: var(--mantine-color-default-border) !important;
+  color: var(--mantine-color-text) !important;
+}
+
+.mantine-TextInput-input:focus,
+.mantine-Input-input:focus {
+  border-color: var(--mantine-color-blue-6) !important;
+}

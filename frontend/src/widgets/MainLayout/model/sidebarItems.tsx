@@ -1,4 +1,4 @@
-import { IconHome, IconUser, IconSettings } from "@tabler/icons-react";
+import { IconHome, IconUser, IconSettings, IconWallet, IconCreditCard, IconShoppingCart, IconReceipt, IconChartBar } from "@tabler/icons-react";
 
 export interface SidebarItem {
   label: string;
@@ -13,11 +13,14 @@ export const sidebarItems: SidebarItem[] = [
 ];
 
 export interface FooterItem {
-  label: string;
+  icon: React.ReactNode;
   path: string;
 }
 
 export const footerItems: FooterItem[] = [
-  { label: "Tab 1", path: "/main/dashboard/tab1" },
-  { label: "Tab 2", path: "/main/dashboard/tab2" },
+  { icon: <IconWallet size={20} />, path: "/main/dashboard/tab1" },
+  { icon: <IconShoppingCart size={20} />, path: "/main/dashboard/tab2" },
+  { icon: <IconCreditCard size={20} />, path: "/main/dashboard/accounts" },
+  { icon: <IconReceipt size={20} />, path: "/main/dashboard/debts" },
+  { icon: <IconChartBar size={20} />, path: "/main/dashboard/analytics" },
 ];
